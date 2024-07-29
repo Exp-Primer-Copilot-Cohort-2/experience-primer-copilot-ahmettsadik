@@ -1,23 +1,27 @@
-// Create a web server that listens for requests on port 3000. It should respond to requests for /comments with a JSON object that represents a list of comments (you can make up your own comments). It should respond to requests for any other path with a 404 status code and a message of "Not Found".
+// Create web server with Express
+const express = require('express');
+const app = express();
 
-const http = require('http');
-const fs = require('fs');
+// Set up the middleware
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/comments') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    const comments = [
-      { username: 'Alice', content: 'I love apples!' },
-      { username: 'Bob', content: 'I love oranges!' },
-      { username: 'Charlie', content: 'I love bananas!' },
-    ];
-    res.end(JSON.stringify(comments));
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
-  }
+// Create a comments array
+const comments = [];
+
+// Create an endpoint to get all comments
+app.get('/comments', (req, res) => {
+  res.json(comments);
 });
 
-server.listen(3000, () => {
-  console.log('Server listening on port 3000');
+// Create an endpoint to post a comment
+app.post('/comments', (req, res) => {
+  const comment = req.body;
+  comments.push(comment);
+  res.json(comment);
 });
+
+// Listen to the port 4001
+app.listen(4001, () => {
+  console.log('Server is running on http://localhost:4001');
+});
+    
